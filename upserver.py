@@ -6,8 +6,7 @@ import os
 app = Flask(__name__)
 
 # Specify the upload folder
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+cur_dir = os.getcwd()
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -15,7 +14,7 @@ def upload_file():
         file = request.files['file']
         if file:
             # Save the uploaded file to the upload folder
-            filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            filename = os.path.join(cur_dir, file.filename)
             file.save(filename)
             return 'File uploaded successfully!'
     return render_template('upload.html')
