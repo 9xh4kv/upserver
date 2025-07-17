@@ -1,16 +1,28 @@
-<!-- upload.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload File</title>
+    <title>File Upload and Download</title>
 </head>
 <body>
-    <h2>Upload File</h2>
-    <form action="/" method="post" enctype="multipart/form-data">
-        <input type="file" name="file">
+    <h1>Upload File</h1>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" multiple>
         <input type="submit" value="Upload">
     </form>
+    
+    <h1>Files</h1>
+    <ul>
+        {% for item, item_type in items %}
+            {% if item_type == 'folder' %}
+                <li><a href="{{ url_for('navigate', subpath=subpath + '/' + item) }}">{{ item }}/</a></li>
+            {% else %}
+                <li><a href="{{ url_for('download_file', filename=subpath + '/' + item) }}">{{ item }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
 </body>
 </html>
